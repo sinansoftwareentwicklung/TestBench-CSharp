@@ -84,10 +84,10 @@ Example:
   },
   "ExpectedStates": {
     "PowerOff": [false, false, false, false],
-    "PowerOn": [false, true, false, false],
+    "PowerOn": [true, false, false, false],
     "Ready": [true, true, false, false],
-    "Test": [false, true, false, true],
-    "Error": [false, true, true, false]
+    "Test": [true, false, false, true],
+    "Error": [true, false, true, false]
   }
 }
 ```
