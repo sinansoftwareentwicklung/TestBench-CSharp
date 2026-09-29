@@ -1,0 +1,14 @@
+{
+  "LedThresholds": {
+    "MinVoltage": 1.75,
+    "MaxVoltage": 3.25
+  },
+
+  "ExpectedStates": {
+    "PowerOff": [false, false, false, false],
+    "PowerOn":  [true,  false, false, false],
+    "Ready":    [true, true, false, false],
+    "Test":     [true, false, false, true],
+    "Error":    [true, false, true, false]
+  }
+}

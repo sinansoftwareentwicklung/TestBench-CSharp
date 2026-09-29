@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+option csharp_namespace = "TestBench.Proto";
+
+package devicebench;
+
+service DeviceService {
+  rpc StartTest (StartTestRequest) returns (StartTestResponse);
+  rpc StreamMeasurements (MeasurementRequest) returns (stream LiveReading);
+  rpc RunLedCheck (LedCheckRequest) returns (LedCheckResponse);
+  rpc GetExpectedLedStates (ExpectedStatesRequest) returns (LedCheckResponse);
+  rpc SendCommand (CommandRequest) returns (CommandResponse);
+  rpc ExecuteTestSequence (TestSequenceRequest) returns (stream TestStepResult);
+}
+
+message LiveReading {
+  double voltage1 = 1;
+  double voltage2 = 2;
+  double voltage3 = 3;
+  double voltage4 = 4;
+  int64 timestamp = 5;
+}
+
+message StartTestRequest {
+  string test_name = 1;
+}
+
+message StartTestResponse {
+  bool accepted = 1;
+  string message = 2;
+}
+
+message MeasurementRequest {
+  string test_name = 1;
+  double min_value = 2;
+  double max_value = 3;
+}
+
+message Measurement {
+  string channel_name = 1;
+  double value = 2;
+  int64 timestamp = 3;
+  bool passed = 4;
+}
+
+message LedCheckRequest {
+  string test_name = 1;
+}
+
+message LedResult {
+  int32 led_number = 1;
+  bool is_on = 2;
+  double voltage = 3;
+  bool passed = 4;
+}
+
+message LedCheckResponse {
+  repeated LedResult results = 1;
+}
+
+message ExpectedStatesRequest {
+}
+
+message CommandRequest {
+  string command = 1;
+}
+
+message CommandResponse {
+  bool sent = 1;
+}
+
+message TestSequenceRequest {
+  repeated string steps = 1;
+  string serial_number = 2;
+}
+
+message TestStepResult {
+  string step = 1;
+  bool passed = 2;
+  repeated LedResult results = 3;
+}

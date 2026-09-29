@@ -1,0 +1,305 @@
+﻿<Window x:Class="TestBench.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Test Bench"
+        Height="620"
+        Width="480"
+        Background="#1E1E1E">
+
+    <DockPanel Margin="20">
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Margin="0,15,0,0">
+
+            <TextBlock Text="FINAL RESULT:"
+                       Foreground="#888888"
+                       FontWeight="Bold"
+                       FontSize="13"
+                       VerticalAlignment="Center"
+                       Margin="0,0,8,0"/>
+
+            <TextBlock x:Name="FinalResultText"
+                       Text="—"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="28"
+                       VerticalAlignment="Center"/>
+
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Top"
+                    HorizontalAlignment="Center">
+
+            <TextBlock x:Name="StatusText"
+                       Text="Connecting..."
+                       FontSize="14"
+                       Foreground="#CCCCCC"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+
+            <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,15">
+
+                <TextBlock Text="Serial Number:"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"/>
+
+                <TextBox x:Name="SerialNumberTextBox"
+                         Width="130"
+                         Height="30"
+                         Margin="0,0,10,0"
+                         Padding="5"/>
+
+                <Button Content="Run Test Sequence"
+                        Click="RunSequence_Click"
+                        Padding="15,8"/>
+
+            </StackPanel>
+
+            <Separator Margin="0,16,0,16"
+                       Background="#444444"/>
+
+
+            <!-- ACTUAL -->
+
+            <Grid Width="400" Margin="0,0,0,15">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="ACTUAL"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Foreground="#888888"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <Ellipse Width="28" Height="28" Fill="{Binding LedResults[0].StatusColor}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding LedResults[0].Voltage, StringFormat='{}{0:F2} V'}"
+                               FontSize="12" Foreground="White" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                    <Ellipse Width="28" Height="28" Fill="{Binding LedResults[1].StatusColor}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding LedResults[1].Voltage, StringFormat='{}{0:F2} V'}"
+                               FontSize="12" Foreground="White" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                    <Ellipse Width="28" Height="28" Fill="{Binding LedResults[2].StatusColor}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding LedResults[2].Voltage, StringFormat='{}{0:F2} V'}"
+                               FontSize="12" Foreground="White" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" HorizontalAlignment="Center">
+                    <Ellipse Width="28" Height="28" Fill="{Binding LedResults[3].StatusColor}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding LedResults[3].Voltage, StringFormat='{}{0:F2} V'}"
+                               FontSize="12" Foreground="White" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                </StackPanel>
+
+            </Grid>
+
+
+            <!-- SEQUENCE RESULT -->
+
+            <TextBlock Text="SEQUENCE RESULT"
+                       FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="#888888"
+                       Margin="0,20,0,8"
+					   HorizontalAlignment="Center"/>
+
+
+            <!-- Headers -->
+
+            <Grid Width="400">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                    <ColumnDefinition Width="77"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="STEP"
+                           Foreground="#888888"
+                           FontSize="11"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="1"
+                           Text="Ready"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="2"
+                           Text="Power"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="3"
+                           Text="Error"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Grid.Column="4"
+                           Text="Test"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+            </Grid>
+
+
+            <!-- Sequence rows -->
+
+            <ItemsControl x:Name="SequenceResultsList"
+                          Width="400"
+                          Margin="0,8,0,0">
+
+                <ItemsControl.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Grid Margin="0,4,0,4">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="77"/>
+                                <ColumnDefinition Width="77"/>
+                                <ColumnDefinition Width="77"/>
+                                <ColumnDefinition Width="77"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <!-- Step -->
+
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding Step}"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+
+                            <!-- LEDs -->
+
+                            <ItemsControl Grid.Column="1"
+                                          Grid.ColumnSpan="4"
+                                          ItemsSource="{Binding Results}">
+
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="4"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+
+                                <ItemsControl.ItemTemplate>
+
+                                    <DataTemplate>
+
+                                        <Grid Width="32"
+                                              Height="32"
+                                              HorizontalAlignment="Center">
+
+
+                                            <!-- Circle = actual state -->
+
+                                            <Ellipse Width="32"
+                                                     Height="32">
+
+                                                <Ellipse.Style>
+
+                                                    <Style TargetType="Ellipse">
+
+                                                        <Setter Property="Fill"
+                                                                Value="#555555"/>
+
+                                                        <Style.Triggers>
+
+                                                            <DataTrigger Binding="{Binding IsOn}"
+                                                                         Value="True">
+
+                                                                <Setter Property="Fill"
+                                                                        Value="LimeGreen"/>
+
+                                                            </DataTrigger>
+
+                                                        </Style.Triggers>
+
+                                                    </Style>
+
+                                                </Ellipse.Style>
+
+                                            </Ellipse>
+
+
+                                            <!-- P/F = test result -->
+
+                                            <TextBlock Foreground="White"
+                                                       FontWeight="Bold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center">
+
+                                                <TextBlock.Style>
+
+                                                    <Style TargetType="TextBlock">
+
+                                                        <Setter Property="Text"
+                                                                Value="F"/>
+
+                                                        <Style.Triggers>
+
+                                                            <DataTrigger Binding="{Binding Passed}"
+                                                                         Value="True">
+
+                                                                <Setter Property="Text"
+                                                                        Value="P"/>
+
+                                                            </DataTrigger>
+
+                                                        </Style.Triggers>
+
+                                                    </Style>
+
+                                                </TextBlock.Style>
+
+                                            </TextBlock>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+
+                        </Grid>
+
+                    </DataTemplate>
+
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </StackPanel>
+
+    </DockPanel>
+
+</Window>
